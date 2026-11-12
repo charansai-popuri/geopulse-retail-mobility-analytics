@@ -13,7 +13,9 @@ Python ping generator -> Snowflake (GEOGRAPHY) -> Apache Sedona spatial joins
 -> dbt hourly footfall models -> Kepler.gl map -> Airflow daily runs
 
 ## Status
-- [ ] Week 1: mock GPS ping generator, Snowflake setup and data load
+- [x] Week 1: mock GPS ping generator v1 (commuter routine, 1,000 devices)
+- [ ] Week 1: scale generator up and validate the data
+- [ ] Week 1: Snowflake setup, GEOGRAPHY tables and data load
 - [ ] Week 2: Sedona 500 m catchment joins, dbt hourly unique visitors
 - [ ] Mid review: spatial audit and data integrity check
 - [ ] Week 3: cannibalization SQL, Kepler.gl map in React
@@ -21,4 +23,10 @@ Python ping generator -> Snowflake (GEOGRAPHY) -> Apache Sedona spatial joins
 - [ ] Final: report, PPT, demo
 
 ## How to run
-Coming soon (added as each module is built).
+### 1. Generate mock GPS pings
+```
+python generator\generate_pings.py
+```
+Creates `data/raw/pings.csv` (about 60,000 pings for 1,000 devices) with the
+columns DeviceID, Lat, Long, Timestamp. The file is not committed to Git
+because `data/raw/` is listed in `.gitignore`.
