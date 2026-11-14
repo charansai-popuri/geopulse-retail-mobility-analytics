@@ -1,26 +1,37 @@
-"""GeoPulse mock GPS ping generator (version 1).
+"""GeoPulse mock GPS ping generator (version 2).
 
 Creates anonymized mobile device pings for one day:
 DeviceID, Lat, Long, Timestamp
 Each device has a home and work location and follows a simple daily routine.
+
+Version 2 adds command-line options so you can make much bigger files:
+    python generator\\generate_pings.py --devices 50000
 """
 
+import argparse
 import csv
 import os
 import random
+import time
 from datetime import datetime, timedelta
 
 # ----- Settings you can change -----
-SEED = 42                      # same seed -> same data every run
-N_DEVICES = 1000               # how many phones to simulate
+DEFAULT_SEED = 42              # same seed -> same data every run
+DEFAULT_DEVICES = 1000         # how many phones to simulate
 DAY = datetime(2026, 11, 9)    # the day to simulate (Monday)
 LAT_MIN, LAT_MAX = 12.90, 13.00
 LONG_MIN, LONG_MAX = 77.55, 77.65
-OUTPUT_FILE = os.path.join("data", "raw", "pings.csv")
+DEFAULT_OUTPUT = os.path.join("data", "raw", "pings.csv")
 
 STEP_MINUTES = 5               # check every 5 minutes
 STILL_PING_EVERY = 30          # a device that is not moving pings every 30 min
 JITTER = 0.0002                # about 20 metres of GPS noise (in degrees)
+
+# Pre-build the 288 timestamp texts of the day once (faster than rebuilding them)
+TIMESTAMPS = {
+    minute: (DAY + timedelta(minutes=minute)).strftime("%Y-%m-%d %H:%M:%S")
+    for minute in range(0, 24 * 60, STEP_MINUTES)
+}
 
 
 def make_device(index):
@@ -56,26 +67,41 @@ def position_and_moving(dev, minute):
 
 
 def main():
-    random.seed(SEED)
-    devices = [make_device(i + 1) for i in range(N_DEVICES)]
-    os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
+    parser = argparse.ArgumentParser(description="Generate mock GPS pings.")
+    parser.add_argument("--devices", type=int, default=DEFAULT_DEVICES,
+                        help="number of phones to simulate (default 1000)")
+    parser.add_argument("--seed", type=int, default=DEFAULT_SEED,
+                        help="random seed (default 42)")
+    parser.add_argument("--output", default=DEFAULT_OUTPUT,
+                        help="CSV file to write (default data/raw/pings.csv)")
+    args = parser.parse_args()
+
+    started = time.time()
+    random.seed(args.seed)
+    devices = [make_device(i + 1) for i in range(args.devices)]
+    os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
 
     rows = 0
-    with open(OUTPUT_FILE, "w", newline="") as f:
+    with open(args.output, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["DeviceID", "Lat", "Long", "Timestamp"])
-        for dev in devices:
+        for number, dev in enumerate(devices, start=1):
+            batch = []                      # all pings of this one device
             for minute in range(0, 24 * 60, STEP_MINUTES):
                 lat, lon, moving = position_and_moving(dev, minute)
                 if moving or (minute + dev["offset"]) % STILL_PING_EVERY < STEP_MINUTES:
                     lat += random.uniform(-JITTER, JITTER)
                     lon += random.uniform(-JITTER, JITTER)
-                    ts = DAY + timedelta(minutes=minute)
-                    writer.writerow([dev["id"], f"{lat:.6f}", f"{lon:.6f}",
-                                     ts.strftime("%Y-%m-%d %H:%M:%S")])
-                    rows += 1
+                    batch.append([dev["id"], f"{lat:.6f}", f"{lon:.6f}", TIMESTAMPS[minute]])
+            writer.writerows(batch)         # write the whole batch in one go
+            rows += len(batch)
+            if number % 10000 == 0:
+                print(f"  ... {number} of {args.devices} devices done")
 
-    print(f"Wrote {rows} pings for {N_DEVICES} devices to {OUTPUT_FILE}")
+    size_mb = os.path.getsize(args.output) / (1024 * 1024)
+    seconds = time.time() - started
+    print(f"Wrote {rows} pings for {args.devices} devices to {args.output} "
+          f"({size_mb:.1f} MB, {seconds:.1f} seconds)")
 
 
 if __name__ == "__main__":
