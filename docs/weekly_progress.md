@@ -7,3 +7,4 @@
 - 13 Nov: wrote validate_pings.py with 12 checks and tested it on clean and damaged data.
 - 14 Nov: generator v2 with --devices option (3 million pings in seconds) and a validator that reads row by row.
 - 15 Nov: created Snowflake trial account, warehouse, database, schema and RAW_PINGS table with a GEOGRAPHY column; verified with a test point and a store distance check.
+- 16 Nov: loaded 2,984,430 pings into Snowflake with a GEOGRAPHY column built during the load; verified counts and morning and evening spikes in Snowflake.

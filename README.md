@@ -16,7 +16,7 @@ Python ping generator -> Snowflake (GEOGRAPHY) -> Apache Sedona spatial joins
 - [x] Week 1: mock GPS ping generator v1 (commuter routine, 1,000 devices)
 - [x] Week 1: ping validator v1 (12 quality checks)
 - [x] Week 1: scale generator up to millions of pings
-- [ ] Week 1: Snowflake setup, GEOGRAPHY tables and data load
+- [x] Week 1: Snowflake setup, GEOGRAPHY tables and data load
 - [ ] Week 2: Sedona 500 m catchment joins, dbt hourly unique visitors
 - [ ] Mid review: spatial audit and data integrity check
 - [ ] Week 3: cannibalization SQL, Kepler.gl map in React
@@ -40,3 +40,9 @@ python generator\validate_pings.py --file data\raw\pings_large.csv
 ```
 Runs 12 checks and reads the file one row at a time, so it works on millions
 of rows. Expected: `12 of 12 checks passed.`
+
+### 3. Create Snowflake objects and load the pings
+Run `sql/01_create_objects.sql` in a Snowflake workspace, one statement at a time.
+Upload `data/raw/pings_large.csv` to the stage `GEOPULSE_DB.RAW.PINGS_STAGE`
+(Ingestion > Add Data > Load files into a Stage), then run `sql/02_load_pings.sql`.
+Expected: 2,984,430 pings, 50,000 devices.

@@ -22,5 +22,11 @@
 - A test point inserted with ST_MAKEPOINT read back as POINT(77.552332 12.963762).
 - ST_DISTANCE between Store A and Store B was NUMBER metres (design target: about 600 m).
 
+## Load (see sql/02_load_pings.sql)
+- data/raw/pings_large.csv (139.5 MB) was uploaded with Snowsight to the stage GEOPULSE_DB.RAW.PINGS_STAGE.
+- COPY INTO loaded it into RAW_PINGS and built LOCATION with ST_MAKEPOINT(longitude, latitude).
+- Result: 2,984,430 pings, 50,000 devices, 0 missing locations (matches the validator).
+- Pings per hour in Snowflake: about 100,000 at night, peaks of about 258,000 in the morning and evening rush hours.
+
 ## Next
-- Load data/raw/pings_large.csv into RAW_PINGS and compare the row count with 2,984,430.
+- Week 2: Apache Sedona 500 m store catchments and spatial joins, dbt hourly unique visitors.
