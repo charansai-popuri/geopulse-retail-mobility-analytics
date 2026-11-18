@@ -9,4 +9,4 @@
 - 15 Nov: created Snowflake trial account, warehouse, database, schema and RAW_PINGS table with a GEOGRAPHY column; verified with a test point and a store distance check.
 - 16 Nov: loaded 2,984,430 pings into Snowflake with a GEOGRAPHY column built during the load; verified counts and morning and evening spikes in Snowflake.
 - 17 Nov: installed Java 17, created a Python 3.14 environment, and installed PySpark 4.1.4, Sedona 1.9.1 and pandas.
-- 18 Nov: filled in the measured Store A to Store B distance in the Snowflake notes and saved the package list in requirements.txt.
+- 18 Nov: fixed the Windows Spark startup error by placing the Sedona jar in PySpark's jars folder; the first Sedona test (a point for Store A) ran successfully. Wrote docs/spark_setup.md.

@@ -46,3 +46,9 @@ Run `sql/01_create_objects.sql` in a Snowflake workspace, one statement at a tim
 Upload `data/raw/pings_large.csv` to the stage `GEOPULSE_DB.RAW.PINGS_STAGE`
 (Ingestion > Add Data > Load files into a Stage), then run `sql/02_load_pings.sql`.
 Expected: 2,984,430 pings, 50,000 devices.
+### 4. Set up Spark and Sedona
+See `docs/spark_setup.md`. Then check the setup with:
+```
+python spatial\hello_sedona.py
+```
+Expected: a table showing `POINT (77.5946 12.9716)`.
