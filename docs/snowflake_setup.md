@@ -20,7 +20,7 @@
 ## Verification
 - SHOW TABLES IN SCHEMA GEOPULSE_DB.RAW lists RAW_PINGS (0 rows before loading).
 - A test point inserted with ST_MAKEPOINT read back as POINT(77.552332 12.963762).
-- ST_DISTANCE between Store A and Store B was NUMBER metres (design target: about 600 m).
+- ST_DISTANCE between Store A and Store B was 608.474 metres (design target: about 600 m).
 
 ## Load (see sql/02_load_pings.sql)
 - data/raw/pings_large.csv (139.5 MB) was uploaded with Snowsight to the stage GEOPULSE_DB.RAW.PINGS_STAGE.
