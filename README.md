@@ -17,7 +17,8 @@ Python ping generator -> Snowflake (GEOGRAPHY) -> Apache Sedona spatial joins
 - [x] Week 1: ping validator v1 (12 quality checks)
 - [x] Week 1: scale generator up to millions of pings
 - [x] Week 1: Snowflake setup, GEOGRAPHY tables and data load
-- [ ] Week 2: Sedona 500 m catchment joins, dbt hourly unique visitors
+- [x] Week 2: Sedona 500 m catchment join on the small file (matches a plain-Python check)
+- [ ] Week 2: catchment join on the 3 million ping file, then dbt hourly unique visitors
 - [ ] Mid review: spatial audit and data integrity check
 - [ ] Week 3: cannibalization SQL, Kepler.gl map in React
 - [ ] Week 4: Airflow automation, 3D H3 hexagons, 24-hour animation
@@ -46,9 +47,19 @@ Run `sql/01_create_objects.sql` in a Snowflake workspace, one statement at a tim
 Upload `data/raw/pings_large.csv` to the stage `GEOPULSE_DB.RAW.PINGS_STAGE`
 (Ingestion > Add Data > Load files into a Stage), then run `sql/02_load_pings.sql`.
 Expected: 2,984,430 pings, 50,000 devices.
+
 ### 4. Set up Spark and Sedona
 See `docs/spark_setup.md`. Then check the setup with:
 ```
 python spatial\hello_sedona.py
 ```
 Expected: a table showing `POINT (77.5946 12.9716)`.
+For circles measured in metres you also need the GeoTools jar (see the last section of `docs/spark_setup.md`).
+
+### 5. Run the 500 m catchment join
+```
+python spatial\catchment_test.py
+```
+Draws a 500 m circle around each store and counts pings and devices inside it.
+Expected on the small file: Store A 428 pings (64 devices), Store B 501 (62),
+Store C 462 (75).

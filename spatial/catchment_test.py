@@ -1,5 +1,13 @@
+import os
+import sys
+
 import pandas as pd
 from sedona.spark import SedonaContext
+
+# Tell Spark to use this same Python (the .venv one) for its helper workers.
+# Without this, Windows picks the Microsoft Store shortcut and fails.
+os.environ["PYSPARK_PYTHON"] = sys.executable
+os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
 
 config = (
     SedonaContext.builder()
