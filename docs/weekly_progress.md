@@ -10,3 +10,4 @@
 - 16 Nov: loaded 2,984,430 pings into Snowflake with a GEOGRAPHY column built during the load; verified counts and morning and evening spikes in Snowflake.
 - 17 Nov: installed Java 17, created a Python 3.14 environment, and installed PySpark 4.1.4, Sedona 1.9.1 and pandas.
 - 18 Nov: fixed the Windows Spark startup error by placing the Sedona jar in PySpark's jars folder; the first Sedona test (a point for Store A) ran successfully. Wrote docs/spark_setup.md.
+- 19 Nov: drew 500 m circles around the three stores with Sedona and joined them to the pings; Store A got X pings from Y devices, Store B ..., Store C ... (small file).
