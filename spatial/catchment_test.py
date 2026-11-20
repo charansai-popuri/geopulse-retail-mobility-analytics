@@ -1,5 +1,7 @@
+import argparse
 import os
 import sys
+import time
 
 import pandas as pd
 from sedona.spark import SedonaContext
@@ -9,16 +11,21 @@ from sedona.spark import SedonaContext
 os.environ["PYSPARK_PYTHON"] = sys.executable
 os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--file", default="data/raw/pings.csv", help="CSV of pings to join")
+args = parser.parse_args()
+start = time.time()
 config = (
     SedonaContext.builder()
     .appName("geopulse-catchment")
     .master("local[*]")
+    .config("spark.driver.memory", "4g")
     .getOrCreate()
 )
 sedona = SedonaContext.create(config)
 
 # 1. Load the pings with pandas and hand them to Spark
-pings_pd = pd.read_csv("data/raw/pings.csv")
+pings_pd = pd.read_csv(args.file)
 sedona.createDataFrame(pings_pd).createOrReplaceTempView("pings_raw")
 
 # 2. The three stores
@@ -56,3 +63,4 @@ result = sedona.sql("""
     ORDER BY c.store
 """)
 result.show()
+print(f"Joined {len(pings_pd):,} pings in {time.time() - start:.1f} seconds")

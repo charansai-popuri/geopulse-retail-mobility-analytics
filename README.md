@@ -18,7 +18,8 @@ Python ping generator -> Snowflake (GEOGRAPHY) -> Apache Sedona spatial joins
 - [x] Week 1: scale generator up to millions of pings
 - [x] Week 1: Snowflake setup, GEOGRAPHY tables and data load
 - [x] Week 2: Sedona 500 m catchment join on the small file (matches a plain-Python check)
-- [ ] Week 2: catchment join on the 3 million ping file, then dbt hourly unique visitors
+- [x] Week 2: catchment join on the 3 million ping file (336 s, no memory errors)
+- [ ] Week 2: dbt hourly unique visitors per store
 - [ ] Mid review: spatial audit and data integrity check
 - [ ] Week 3: cannibalization SQL, Kepler.gl map in React
 - [ ] Week 4: Airflow automation, 3D H3 hexagons, 24-hour animation
@@ -63,3 +64,8 @@ python spatial\catchment_test.py
 Draws a 500 m circle around each store and counts pings and devices inside it.
 Expected on the small file: Store A 428 pings (64 devices), Store B 501 (62),
 Store C 462 (75).
+On the large file (about 3 million pings, takes about 5 minutes):
+```
+python spatial\catchment_test.py --file data\raw\pings_large.csv
+```
+Expected: Store A 22,605 pings (3,829 devices), Store B 21,425 (3,506), Store C 21,153 (3,421).
