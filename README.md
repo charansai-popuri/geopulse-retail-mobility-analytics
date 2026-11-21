@@ -19,7 +19,7 @@ Python ping generator -> Snowflake (GEOGRAPHY) -> Apache Sedona spatial joins
 - [x] Week 1: Snowflake setup, GEOGRAPHY tables and data load
 - [x] Week 2: Sedona 500 m catchment join on the small file (matches a plain-Python check)
 - [x] Week 2: catchment join on the 3 million ping file (336 s, no memory errors)
-- [ ] Week 2: dbt hourly unique visitors per store
+- [x] Week 2: dbt hourly unique visitors per store
 - [ ] Mid review: spatial audit and data integrity check
 - [ ] Week 3: cannibalization SQL, Kepler.gl map in React
 - [ ] Week 4: Airflow automation, 3D H3 hexagons, 24-hour animation
@@ -69,3 +69,9 @@ On the large file (about 3 million pings, takes about 5 minutes):
 python spatial\catchment_test.py --file data\raw\pings_large.csv
 ```
 Expected: Store A 22,605 pings (3,829 devices), Store B 21,425 (3,506), Store C 21,153 (3,421).
+
+### 6. Hourly unique visitors per store
+```
+python spatial\hourly_visitors.py --file data\raw\pings_large.csv
+```
+Saves `data/processed/hourly_visitors.csv` (store, hour, unique_visitors). Morning (8 to 9) and evening (17 to 18) hours should be about five times the night hours.
