@@ -8,3 +8,7 @@ notebooks/
 *.ipynb
 data/raw/
 *.parquet
+.venv-dbt/
+*.p8
+*.pem
+*.key
