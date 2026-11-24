@@ -1,0 +1,24 @@
+version: 2
+
+seeds:
+  - name: hourly_visitors
+    description: "Unique devices per store per hour from the Sedona 500 m catchment join (3 million pings)."
+
+models:
+  - name: hourly_footfall
+    description: "Unique visitors per store per hour, labelled with the time of day."
+    columns:
+      - name: store
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['A', 'B', 'C']
+      - name: hour
+        data_tests:
+          - not_null
+      - name: unique_visitors
+        data_tests:
+          - not_null
+  - name: peak_vs_night
+    description: "Average unique visitors per hour for each store and time of day."

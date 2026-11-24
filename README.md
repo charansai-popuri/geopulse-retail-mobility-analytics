@@ -57,6 +57,8 @@ python spatial\hello_sedona.py
 Expected: a table showing `POINT (77.5946 12.9716)`.
 For circles measured in metres you also need the GeoTools jar (see the last section of `docs/spark_setup.md`).
 
+dbt uses its own environment: `python -m venv .venv-dbt`, activate it, then `pip install -r requirements-dbt.txt`.
+
 ### 5. Run the 500 m catchment join
 ```
 python spatial\catchment_test.py
@@ -75,3 +77,4 @@ Expected: Store A 22,605 pings (3,829 devices), Store B 21,425 (3,506), Store C 
 python spatial\hourly_visitors.py --file data\raw\pings_large.csv
 ```
 Saves `data/processed/hourly_visitors.csv` (store, hour, unique_visitors). Morning (8 to 9) and evening (17 to 18) hours should be about five times the night hours.
+

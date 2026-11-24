@@ -1,0 +1,10 @@
+name: geopulse
+version: "1.0.0"
+config-version: 2
+profile: geopulse
+model-paths: ["models"]
+seed-paths: ["seeds"]
+
+models:
+  geopulse:
+    +materialized: table
