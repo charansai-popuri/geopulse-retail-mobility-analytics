@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Tables loaded into Snowflake outside dbt."
+    database: GEOPULSE_DB
+    schema: RAW
+    tables:
+      - name: store_visits
+        description: "One row per device and store that device visited (within 500 m)."
+        columns:
+          - name: device_id
+            data_tests:
+              - not_null
+          - name: store
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['A', 'B', 'C']
