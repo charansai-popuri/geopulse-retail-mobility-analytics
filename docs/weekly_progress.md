@@ -19,4 +19,6 @@
 - 24 Nov: connected dbt to Snowflake with key-pair login (dbt needs the Snowflake LOGIN_NAME as the user, not the user NAME). Loaded the 72-row hourly visitors table as a dbt seed, built two models (hourly_footfall, peak_vs_night) and ran 4 tests, all passing. Rush hours show about 1,700 unique visitors per hour at Store A against about 355 at night, about 5 times higher.
 
 ## Week 3 (24 Nov to 30 Nov)
-- 25 Nov: created STORES and STORE_VISITS tables in Snowflake (devices within 500 m of each store, using ST_DWITHIN). Counts: A <your A>, B <your B>, C <your C>.
+- 25 Nov: created STORES and STORE_VISITS tables in Snowflake (devices within 500 m of each store, using ST_DWITHIN). Counts: A 3,824, B 3,497, C 3,420.
+- 26 Nov: built two dbt models on STORE_VISITS, cannibalization_summary and store_overlap. [X]% of devices visited more than one store, and the biggest overlap is Stores A and B ([Y] devices, [Z]% of Store A's devices).
+- 27 Nov: documented the dbt models and ticked the cannibalization item in the README. Next: Kepler.gl map in React.

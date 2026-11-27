@@ -21,7 +21,8 @@ Python ping generator -> Snowflake (GEOGRAPHY) -> Apache Sedona spatial joins
 - [x] Week 2: catchment join on the 3 million ping file (336 s, no memory errors)
 - [x] Week 2: dbt hourly unique visitors per store
 - [ ] Mid review: spatial audit and data integrity check
-- [ ] Week 3: cannibalization SQL, Kepler.gl map in React
+- [x] Week 3: dbt cannibalization models (devices visiting more than one store, store overlap)
+- [ ] Week 3: Kepler.gl map in React
 - [ ] Week 4: Airflow automation, 3D H3 hexagons, 24-hour animation
 - [ ] Final: report, PPT, demo
 
@@ -77,4 +78,15 @@ Expected: Store A 22,605 pings (3,829 devices), Store B 21,425 (3,506), Store C 
 python spatial\hourly_visitors.py --file data\raw\pings_large.csv
 ```
 Saves `data/processed/hourly_visitors.csv` (store, hour, unique_visitors). Morning (8 to 9) and evening (17 to 18) hours should be about five times the night hours.
+
+### 7. Build the dbt models
+```
+cd dbt_geopulse
+..\.venv-dbt\Scripts\Activate.ps1
+dbt seed
+dbt run
+dbt test
+```
+Builds `hourly_footfall`, `peak_vs_night`, `cannibalization_summary` and `store_overlap` in `GEOPULSE_DB.ANALYTICS`.
+You need your own `profiles.yml` in `C:\Users\<you>\.dbt\`. Never commit it.
 
