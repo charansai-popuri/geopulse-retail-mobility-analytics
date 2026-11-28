@@ -20,5 +20,6 @@
 
 ## Week 3 (24 Nov to 30 Nov)
 - 25 Nov: created STORES and STORE_VISITS tables in Snowflake (devices within 500 m of each store, using ST_DWITHIN). Counts: A 3,824, B 3,497, C 3,420.
-- 26 Nov: built two dbt models on STORE_VISITS, cannibalization_summary and store_overlap. [X]% of devices visited more than one store, and the biggest overlap is Stores A and B ([Y] devices, [Z]% of Store A's devices).
+- 26 Nov: built two dbt models on STORE_VISITS, cannibalization_summary and store_overlap. 25.4% of devices visited more than one store, and the biggest overlap is Stores A and B (1,948 devices, 50.9% of Store A's devices).
 - 27 Nov: documented the dbt models and ticked the cannibalization item in the README. Next: Kepler.gl map in React.
+- 28 Nov: made a Kepler.gl-ready CSV (spatial/make_kepler_csv.py, 72 rows with coordinates and a time column) and previewed the rush-hour pattern on the Kepler.gl demo map.
